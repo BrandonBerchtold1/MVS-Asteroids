@@ -27,34 +27,34 @@ void screenLoop(float *xPosition, float *yPosition){
 void keyboardInput(float *xVelocity, float *yVelocity){
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
-		*xVelocity = *xVelocity - 0.002f;// left key is pressed: move our character
+		*xVelocity = *xVelocity - 0.2f;// left key is pressed: move our character
 
-		if (*xVelocity < -0.7f){
-			*xVelocity = -0.7f;
+		if (*xVelocity < -7.0f){
+			*xVelocity = -7.0f;
 		}
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
-		*xVelocity = *xVelocity + 0.002f;// Right key is pressed: move our character
+		*xVelocity = *xVelocity + 0.2f;// Right key is pressed: move our character
 
-		if (*xVelocity > 0.7f){
-			*xVelocity = 0.7f;
+		if (*xVelocity > 7.0f){
+			*xVelocity = 7.0f;
 		}
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-		*yVelocity = *yVelocity - 0.002f;// Up key is pressed: move our character
+		*yVelocity = *yVelocity - 0.2f;// Up key is pressed: move our character
 
-		if (*yVelocity < -0.7f){
-			*yVelocity = -0.7f;
+		if (*yVelocity < -7.0f){
+			*yVelocity = -7.0f;
 		}
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
-		*yVelocity = *yVelocity + 0.002f;// Down key is pressed: move our character
+		*yVelocity = *yVelocity + 0.2f;// Down key is pressed: move our character
 
-		if (*yVelocity > 0.7f){
-			*yVelocity = 0.7f;
+		if (*yVelocity > 7.0f){
+			*yVelocity = 7.0f;
 		}
 	}
 }
@@ -73,22 +73,22 @@ void stopDrift(float *xVelocity, float *yVelocity){
 	if (xVelocity != 0){
 
 		if (*xVelocity > 0){
-			*xVelocity = *xVelocity - 0.0005f;
+			*xVelocity = *xVelocity - 0.05f;
 		}
 
 		if (*xVelocity < 0){
-			*xVelocity = *xVelocity + 0.0005f;
+			*xVelocity = *xVelocity + 0.05f;
 		}
 	}
 
 	if (yVelocity != 0){
 
 		if (*yVelocity > 0){
-			*yVelocity = *yVelocity - 0.0005f;
+			*yVelocity = *yVelocity - 0.05f;
 		}
 
 		if (*yVelocity < 0){
-			*yVelocity = *yVelocity + 0.0005f;
+			*yVelocity = *yVelocity + 0.05f;
 		}
 	}
 }

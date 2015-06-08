@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Asteroids", "ConsoleApplication1\ConsoleApplication1.vcxproj", "{5E2BD308-0A7A-44D2-8AAF-D9BD90BDF6B5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Asteroids", "ConsoleApplication1.vcxproj", "{5E2BD308-0A7A-44D2-8AAF-D9BD90BDF6B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

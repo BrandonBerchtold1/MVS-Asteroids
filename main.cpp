@@ -2,8 +2,12 @@
 #include <cstdlib>
 #include <iostream>
 #include "Asteroids.h"
+#include "Parameters.h"
 
 /*       NOTES
+/* 
+/* **********SETTINGS:   Auto    Release    x64  ************
+/*
 /* Add gravity to objects
 /* Add asteroids and planets on new screens
 /* Allow travel between screens so new objects exist in new screens(or change so ship stays in center and objects come and go, i perfer this)
@@ -21,7 +25,8 @@
 /* texture ship, asteroids, and other objects
 /* change bullets to rectangles pointing in travel direction, possibly add particle effects, add ability to fire multiple bullets, change spawn point
 /*			to end of barrel or tip of ship instead of center of ship
-/* 
+/* does screen resolution affect stuff? if so change all values to multiples of screen dimensions.
+/* triangle drift problem? it kind of drifts for no reason...
 /*																																						*/
 
 using namespace std;
@@ -29,7 +34,7 @@ using namespace std;
 int main(){
 
 	float i = 0, xPosition = 960, yPosition = 540, xVelocity = 0, yVelocity = 0, bulletTrajectoryX, bulletTrajectoryY, created = 0, 
-		bulletX = xPosition, bulletY = yPosition, bulletXVel = xVelocity, bulletYVel = yVelocity, fired = 1;
+		bulletX = xPosition, bulletY = yPosition, bulletXVel, bulletYVel, fired = 1, bulletFireAngle;//can buletx & y not be set to ship coordinates here?
 
 	sf::RenderWindow window(sf::VideoMode(1920,1080), "Aseroids"/*, sf::Style::Fullscreen*/);//creates window
 
@@ -71,10 +76,18 @@ int main(){
 			/*Gun, if right mouse btn pressed, bullet spawns and this loops until bullet leaves screen (make into function)*/
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left) || created == 1){
 
+				created = 1;//loops this loop while bullet is active
+
+				/*sets bullet spawn location to that of ship and then allows bullet to spawn according to it velocity and position*/
+				if (fired == 1){
+					bulletX = xPosition;
+					bulletY = yPosition;
+				}
+
 				/*Creates bullet*/
 				sf::CircleShape bullet(5);
 				bullet.setPosition(bulletX, bulletY);//change spawn point to end of barel on ship instead of ship center
-				bullet.setFillColor(sf::Color::Red);
+				bullet.setFillColor(sf::Color::Yellow);
 				
 				/*draws ship and bullet (add multiple bullet firing capabilities with slight delay*/
 				window.clear();
@@ -82,53 +95,47 @@ int main(){
 				window.draw(bullet);//draws bullet
 				window.display();
 
-				/*gets bullet trajectory*/
-				if (fired = 1){
+				//gun(xPosition, yPosition, &window);//fires gun by mouse click in direction pointed(***switch to space btn. fire when we can rotate ship image****)
+				/*gets bullet trajectory (make into function!!!)*/
+				if (fired == 1){
+
 					sf::Vector2i mousePosition = sf::Mouse::getPosition(window);//gets mouse position
 
-					/*determines direction vector*/
+					/*determines direction to fire bullet*/
 					bulletTrajectoryX = mousePosition.x - xPosition;
 					bulletTrajectoryY = mousePosition.y - yPosition;
 
-					fired = 0;//
+					bulletFireAngle = atan(bulletTrajectoryY / bulletTrajectoryX);//determines angle in radians, having trouble with sign currently though
+					cout << "bulletFireAngle: " << abs(bulletFireAngle) << endl;
+
+					/*sets bullet velocity to ship velocity + component of trajectory velocity, (make function)*/
+					if (bulletTrajectoryX > 0){
+						bulletXVel = xVelocity + bulletVelocity * cos(abs(bulletFireAngle));
+					}
+
+					else{
+						bulletXVel = xVelocity - bulletVelocity * cos(abs(bulletFireAngle));
+					}
+
+					if (bulletTrajectoryY > 0){
+						bulletYVel = yVelocity + bulletVelocity * sin(abs(bulletFireAngle));
+					}
+
+					else{
+						bulletYVel = yVelocity - bulletVelocity * sin(abs(bulletFireAngle));
+					}
+
+					fired = 0;
 				}
 
-				/*sets bullet x velocity to ship velocity + component of trajectory velocity, (make function)*/
-				bulletXVel = bulletXVel + .1f * bulletTrajectoryX / (bulletTrajectoryX + bulletTrajectoryY);				
-				if (bulletXVel > 1){
-					bulletXVel = 1;
-				}
-
-				if (bulletXVel < -1){
-					bulletXVel = -1;
-				}
-
-				/*sets bullet y velocity to ship velocity + component of trajectory velocity(make function)*/
-				bulletYVel = bulletYVel + .1f * bulletTrajectoryY / (bulletTrajectoryX + bulletTrajectoryY);
-				if (bulletYVel > 1){
-					bulletYVel = 1;
-				}
-
-				if (bulletYVel < -1){
-					bulletYVel = -1;
-				}
-
-				/*updates bulet position*/
+				/*updates bullet position*/
 				bulletX = bulletX + bulletXVel;
 				bulletY = bulletY + bulletYVel;
 
-				//gun(xPosition, yPosition, &window);//fires gun by mouse click in direction pointed(***switch to space btn. fire when we can rotate ship image****)
-
-				created = 1;
-
 				/*kills bullet if it exits screen and resets for next firing*/
 				if (bulletX > 1920 || bulletX < 0 || bulletY > 1080 || bulletY < 0){
-					created = 0;
-					bulletX = xPosition;
-					bulletY = yPosition;
-					bulletXVel = xVelocity;
-					bulletYVel = yVelocity;
-					fired = 1;
+					created = 0;//stops bullet loop
+					fired = 1;//allows bullet velocity loop to go through once next time bullet is fired
 				}
 			}
 
@@ -139,9 +146,10 @@ int main(){
 				window.display();
 			}
 
-			/*outputs framerate*/
+			/*outputs framerate
 			sf::Time time = clock.getElapsedTime();
 			cout << 1.0f / time.asSeconds() << endl;
 			clock.restart().asSeconds();
+			*/
 		}
 }
