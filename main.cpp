@@ -42,14 +42,18 @@ using namespace std;
 
 int main(){
 
-	float xPosition = 960, yPosition = 540, xVelocity = 0, yVelocity = 0, bulletTrajectoryX, bulletTrajectoryY,bulletFireAngle;
+	float xPosition = 960, yPosition = 540, xVelocity = 0, yVelocity = 0, bulletTrajectoryX, bulletTrajectoryY, bulletFireAngle;
 	int i = 0, j = 0, currentBullets = 0, bulletNum = 0, fired = 0;
 
 	float bulletStats[4][10000] = { 0 };//stores bullet position & velocity (make into a vector array to save space)
-	float(*p_bulletStats)[4][10000] = &bulletStats;
 
 	sf::RenderWindow window(sf::VideoMode(1920,1080), "Aseroids"/*, sf::Style::Fullscreen*/);//creates window
 
+	/*Anti Aliasing*/
+	sf::ContextSettings settings;
+	settings.antialiasingLevel = 8;
+
+	/*clock for firing delay and frame rate limit*/
 	sf::Clock clock;
 	float time = 0.f;
 
