@@ -1,6 +1,8 @@
 #include <cstdlib>
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "Asteroids.h"
+#include "Parameters.h"
 
 using namespace std;
 
@@ -88,22 +90,54 @@ void stopDrift(float *xVelocity, float *yVelocity){
 		}
 
 		if (*yVelocity < 0){
-			*yVelocity = *yVelocity + 0.05f;
+			*yVelocity = *yVelocity + 0.05f;//yVelocity += 0.05f; change in all places possible
 		}
 	}
 }
 
-/*fires projectile in direction mouse points
-void gun(float xPosition, float yPosition, sf::RenderWindow *window){
-
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-
-		sf::Vector2i mousePosition = sf::Mouse::getPosition(*window); // left mouse button is pressed, get the local mouse position (relative to a window)
-
-		cout << "x: " << mousePosition.x << "y: " << mousePosition.y << endl;
+/*sets bullet X velocity to ship velocity + component of trajectory velocity)*/
+float Bullet::bulletXVel(float bulletTrajectoryX, float xVelocity, float bulletFireAngle){
+	
+	if (bulletTrajectoryX > 0){
+		return xVelocity + bulletVelocity * cos(abs(bulletFireAngle));
 	}
+
+	else{
+		return xVelocity - bulletVelocity * cos(abs(bulletFireAngle));
+	}
+}
+
+/*sets bullet Y velocity to ship velocity + component of trajectory velocity)*/
+float Bullet::bulletYVel(float bulletTrajectoryY, float yVelocity, float bulletFireAngle){
+
+	if (bulletTrajectoryY > 0){
+		return yVelocity + bulletVelocity * sin(abs(bulletFireAngle));
+	}
+
+	else{
+		return yVelocity - bulletVelocity * sin(abs(bulletFireAngle));
+	}
+}
+
+/*updates bullet X position
+float Bullet::bulletX(float bulletTrajectoryX, float xVelocity, float bulletFireAngle, float *bulletX){
+	*bulletX = bulletX(bulletTrajectoryX, xVelocity, bulletFireAngle, *bulletX) + bulletXVel(bulletTrajectoryX, xVelocity, bulletFireAngle);
 }*/
 
+/*updates bullet Y position
+float Bullet::bulletY(float bulletTrajectoryY, float yVelocity, float bulletFireAngle, float *bulletY){
+	return bulletY(bulletTrajectoryY, yVelocity, bulletFireAngle, *bulletY) + bulletYVel(bulletTrajectoryY, yVelocity, bulletFireAngle);
+}*/
+
+/*kills bullet if it exits screen and empties it's array elements*/
+int killBullet(float bulletStats[][10000], int bulletNum, int currentBullets){
+
+	if (bulletStats[0][bulletNum] > 1920 || bulletStats[0][bulletNum] < 0 || bulletStats[1][bulletNum] > 1080 || bulletStats[1][bulletNum] < 0){
+		return 1;
+	}
+
+	else return 0;
+}
 
 /*closes wondow if "esc" button is pressed or if top right exit button is. (Allow player to exit to main using esc then use button on screen to exit fully
 void closeWindow(sf::RenderWindow *window){
