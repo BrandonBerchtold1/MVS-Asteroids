@@ -30,7 +30,7 @@ void updatePositions(float *xPosition, float *yPosition, float *xVelocity, float
 
 void stopDrift(float *xVelocity, float *yVelocity);
 
-int killBullet(float bulletStats[][10000], int bulletNum, int currentBullets);
+int killBullet(float bulletStats[][100], int bulletNum);
 
 //void closeWindow(sf::RenderWindow *window);
 

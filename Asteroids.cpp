@@ -130,9 +130,11 @@ float Bullet::bulletY(float bulletTrajectoryY, float yVelocity, float bulletFire
 }*/
 
 /*kills bullet if it exits screen and empties it's array elements*/
-int killBullet(float bulletStats[][10000], int bulletNum, int currentBullets){
+int killBullet(float bulletStats[][100], int bulletNum){
 
-	if (bulletStats[0][bulletNum] > 1920 || bulletStats[0][bulletNum] < 0 || bulletStats[1][bulletNum] > 1080 || bulletStats[1][bulletNum] < 0){
+	cout << "bullet x & y vel test" << bulletStats[0][bulletNum - 1] << " " << bulletStats[1][bulletNum - 1] << endl;
+
+	if (bulletStats[0][bulletNum - 1] > 1920 || bulletStats[0][bulletNum - 1] < 0 || bulletStats[1][bulletNum - 1] > 1080 || bulletStats[1][bulletNum - 1] < 0){
 		return 1;
 	}
 
